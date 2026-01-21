@@ -43,45 +43,42 @@ function buscarVehiculo(id) {
 }
 
 function calcularPrecioFinal(precioBase, cuotas) {
-    let interes = 0;
+    const intereses = {
+        3: 0.10,
+        6: 0.20,
+        12: 0.30
+    };
 
-    if (cuotas === 3) {
-        interes = 0.10;
-    } else if (cuotas === 6) {
-        interes = 0.20;
-    } else {
-        interes = 0.30;
-    }
-
-    return precioBase + (precioBase * interes);
+    return intereses[cuotas]
+        ? precioBase + (precioBase * intereses[cuotas])
+        : null;
 }
 
 alert("Bienvenido al concesionario");
 
 const seleccion = parseInt(prompt(mostrarVehiculos()));
-let vehiculoElegido = null;
+let vehiculoElegido = !isNaN(seleccion) && buscarVehiculo(seleccion);
 
-if (isNaN(seleccion)) {
-    alert("Debe ingresar un número válido");
+if (!vehiculoElegido) {
+    alert("Vehículo no válido");
 } else {
-    vehiculoElegido = buscarVehiculo(seleccion);
-}
-
-if (vehiculoElegido) {
     const financiar = confirm("¿Desea financiar el vehículo?");
 
-    if (financiar) {
+    if (!financiar) {
+        alert(`Compra al contado\nPrecio: $${vehiculoElegido.precio}`);
+        console.log("Compra al contado:", vehiculoElegido);
+    } else {
         const cuotas = parseInt(prompt("Ingrese cantidad de cuotas (3, 6 o 12):"));
         const precioFinal = calcularPrecioFinal(vehiculoElegido.precio, cuotas);
 
-        alert(`Usted eligió un ${vehiculoElegido.modelo}\nPrecio final: $${precioFinal}`);
-        console.log("Compra financiada:", vehiculoElegido, precioFinal);
-    } else {
-        alert(`Compra al contado\nPrecio: $${vehiculoElegido.precio}`);
-        console.log("Compra al contado:", vehiculoElegido);
+        if (!precioFinal) {
+            alert("Cantidad de cuotas no válida");
+        } else {
+            alert(`Usted eligió un ${vehiculoElegido.modelo}\nPrecio final: $${precioFinal}`);
+            console.log("Compra financiada:", vehiculoElegido, precioFinal);
+        }
     }
-} else {
-    alert("Vehículo no válido");
 }
+
 
 
