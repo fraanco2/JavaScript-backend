@@ -23,23 +23,47 @@ const vehiculos = [
 
 ]
 
-function mostrarVehiculos() {
-    let mensaje = "Vehiculos disponibles:\n";
+const container = document.getElementById("container-vehiculos");
 
-    for (let i =0;i <vehiculos.length; i++){
-        mensaje +=`${vehiculos[i].id}-${vehiculos[i].modelo} ($${vehiculos[i].precio})\n`;
-    }
+function renderVehiculos() {
+    container.innerHTML="";
+    vehiculos.forEach((vehiculo)=>{
+        const card = document.createElement("div");
 
-    return mensaje;
+        card.innerHTML=`
+        <h3>${vehiculo.modelo}</h3>
+        <p>Precio: $${vehiculo.precio}</p>
+        <button data-id="${vehiculo.id}">Seleccionar</button>`;
+
+        container.appendChild(card);
+    })
 }
 
-function buscarVehiculo(id) {
-    for (let vehiculo of vehiculos) {
-        if (vehiculo.id === id) {
-            return vehiculo;
-        }
-    }
-    return null;
+function selectVehiculo(){
+    const button = document.querySelectorAll("button[data-id]");
+
+    button.forEach((button)=>{
+        button.addEventListener("click",()=>{
+            const idVehiculo= parseInt(button.dataset.id)
+
+            console.log("ID seleccionado:", idVehiculo);
+
+            const vehiculoElegido = buscarVehiculo(idVehiculo);
+
+            console.log("Vehiculo elegido", vehiculoElegido);
+
+            localStorage.setItem("vehiculoSeleccionado",
+                JSON.stringify(vehiculoElegido)
+            )
+        })
+    })
+}
+
+renderVehiculos();
+selectVehiculo();
+
+function buscarVehiculo(id){
+    return vehiculos.find((vehiculo)=> vehiculo.id === id) || null;
 }
 
 function calcularPrecioFinal(precioBase, cuotas) {
@@ -53,32 +77,4 @@ function calcularPrecioFinal(precioBase, cuotas) {
         ? precioBase + (precioBase * intereses[cuotas])
         : null;
 }
-
-alert("Bienvenido al concesionario");
-
-const seleccion = parseInt(prompt(mostrarVehiculos()));
-let vehiculoElegido = !isNaN(seleccion) && buscarVehiculo(seleccion);
-
-if (!vehiculoElegido) {
-    alert("Vehículo no válido");
-} else {
-    const financiar = confirm("¿Desea financiar el vehículo?");
-
-    if (!financiar) {
-        alert(`Compra al contado\nPrecio: $${vehiculoElegido.precio}`);
-        console.log("Compra al contado:", vehiculoElegido);
-    } else {
-        const cuotas = parseInt(prompt("Ingrese cantidad de cuotas (3, 6 o 12):"));
-        const precioFinal = calcularPrecioFinal(vehiculoElegido.precio, cuotas);
-
-        if (!precioFinal) {
-            alert("Cantidad de cuotas no válida");
-        } else {
-            alert(`Usted eligió un ${vehiculoElegido.modelo}\nPrecio final: $${precioFinal}`);
-            console.log("Compra financiada:", vehiculoElegido, precioFinal);
-        }
-    }
-}
-
-
 
