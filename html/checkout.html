@@ -3,37 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Checkout</title>
 </head>
 <body>
-    <h1>Concesionaria</h1>
-    <section>
-        <h2>Vehículos disponibles</h2>
-        <div id="container-vehiculos"></div>
-    </section>
-
-    <section>
-        <h2>Finalizar compra</h2>
-
+    <header>
+        <h1>Checkout</h1>
+    </header>
+    <main>
+        
         <form id="form-compra">
-            <label for="cuotas">Elegí las cuotas:</label>
+            
+            <div id="detalle-vehiculo"></div>
+
+            <label for="cuotas">Seleccione cuotas:</label>
             <select id="cuotas">
                 <option value="3">3 cuotas</option>
                 <option value="6">6 cuotas</option>
                 <option value="12">12 cuotas</option>
             </select>
 
-            <button type="submit">Finalizar compra</button>
+            <button type="submit">Finalizar Compra</button>
         </form>
-    </section>
-    <footer>
-    <section>
-        <div id="resumen-compra"></div>
-    </section>
-    <p><a href="../index.html">Volver al inicio</a></p>
-    </footer>
-    <script src="../js/main.js"></script>
-    <script src="../js/checkout.js"></script>
 
+        <div id="resumen-compra"></div>
+    </main>
+    <footer>
+        <p><a href="../index.html">Volver al Inicio</a></p>
+    </footer>
+
+    <script src="../js/checkout.js"></script>
 </body>
 </html>
