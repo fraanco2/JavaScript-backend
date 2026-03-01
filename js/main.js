@@ -1,27 +1,3 @@
-const vehiculos = [
-    {
-
-      id:1,
-      modelo:"Peugeot",
-      precio:20000,
-},
-{
-    id:2,
-    modelo:"Chevrolet",
-    precio:12000,
-},
-{
-    id:3,
-    modelo:"Fiat",
-    precio:8000,
-},
-{
-    id:4,
-    modelo:"Volvo",
-    precio:25000,
-}
-
-]
 
 const container = document.getElementById("container-vehiculos");
 const mensaje = document.getElementById("mensaje");
