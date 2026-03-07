@@ -1,69 +1,142 @@
-function obtenerVehiculoStorage() {
-    return JSON.parse(localStorage.getItem("vehiculoSeleccionado"));
-}
+// =====================
+// IMPORTAR LUXON
+// =====================
+const { DateTime } = luxon;
 
+// =====================
+// ELEMENTOS DEL DOM
+// =====================
 const formCompra = document.getElementById("form-compra");
 const detalleVehiculo = document.getElementById("detalle-vehiculo");
 const resumenCompra = document.getElementById("resumen-compra");
 
-const vehiculo = obtenerVehiculoStorage();
+// =====================
+// FUNCION PARA OBTENER CARRITO
+// =====================
+function obtenerCarritoStorage() {
+    return JSON.parse(localStorage.getItem("carrito")) || [];
+}
 
-if (vehiculo) {
-    detalleVehiculo.innerHTML = `
-        <h3>${vehiculo.modelo}</h3>
-        <p>Precio base: $${vehiculo.precio}</p>
-    `;
+// =====================
+// FUNCION TOASTIFY
+// =====================
+function toastNotificacion(text, tipo="info"){
+    let color = "#2196F3"; // azul
+    if(tipo === "success") color = "#4CAF50";
+    if(tipo === "error") color = "#f44336";
+
+    Toastify({
+        text: text,
+        duration: 3000,
+        gravity: "top",
+        position: "right",
+        style: {
+            background: color,
+            color: "#fff",
+            fontWeight: "bold",
+            borderRadius: "8px",
+        },
+        close:true
+    }).showToast();
+}
+
+// =====================
+// MOSTRAR DETALLES DEL CARRITO
+// =====================
+const carrito = obtenerCarritoStorage();
+
+if(carrito.length > 0) {
+    let totalBase = 0;
+    detalleVehiculo.innerHTML = "";
+
+    carrito.forEach(v => {
+        totalBase += v.precio;
+
+        // AJUSTE DE RUTA PARA IMAGENES
+        let rutaImagen = v.img.replace("./imagenes/", "../imagenes/");
+
+        detalleVehiculo.innerHTML += `
+            <div class="detalle-vehiculo-item">
+                <img src="${rutaImagen}" alt="${v.modelo}" class="vehiculo-img-checkout">
+                <p>${v.modelo} - $${v.precio.toLocaleString()}</p>
+            </div>
+        `;
+    });
+
+    detalleVehiculo.innerHTML += `<h3>Total base: $${totalBase.toLocaleString()}</h3>`;
 } else {
-    detalleVehiculo.innerHTML = "<p>No hay vehículo seleccionado.</p>";
+    detalleVehiculo.innerHTML = "<p>No hay vehículos en el carrito.</p>";
     formCompra.querySelector("button[type='submit']").disabled = true;
 }
 
+// =====================
+// FUNCION PARA CALCULO DE CUOTAS
+// =====================
 function calcularPrecioFinal(precioBase, cuotas) {
-    const intereses = {
-        3: 0.10,
-        6: 0.20,
-        12: 0.30
-    };
-    return intereses[cuotas]
-        ? precioBase + precioBase * intereses[cuotas]
-        : precioBase;
+    const intereses = { 3: 0.10, 6: 0.20, 12: 0.30 };
+    const tasa = intereses[cuotas] || 0;
+
+    const total = precioBase + (precioBase * tasa);
+    const precioPorCuota = total / cuotas;
+
+    return { total, precioPorCuota };
 }
 
-function limpiarStorage() {
-    localStorage.removeItem("vehiculoSeleccionado");
-}
+// =====================
+// FUNCION PARA MOSTRAR RESUMEN FINAL
+// =====================
+function mostrarResumenFinal(carrito, cuotas) {
+    let totalBase = carrito.reduce((acc, v) => acc + v.precio, 0);
+    const { total, precioPorCuota } = calcularPrecioFinal(totalBase, cuotas);
+    const fechaCompra = DateTime.now().toLocaleString(DateTime.DATETIME_MED);
 
-function mostrarResumen(vehiculo, cuotas, total) {
-    resumenCompra.innerHTML = `
-        <h2>Resumen de compra</h2>
-        <p><strong>Vehículo:</strong> ${vehiculo.modelo}</p>
-        <p><strong>Precio base:</strong> $${vehiculo.precio}</p>
-        <p><strong>Cuotas:</strong> ${cuotas}</p>
-        <p><strong>Total a pagar:</strong> $${total}</p>
+    // RENDER VEHICULOS CON IMAGENES
+    let html = `<h2>Resumen de compra</h2>`;
+    carrito.forEach(v => {
+        let rutaImagen = v.img.replace("./imagenes/", "../imagenes/");
+
+        html += `
+            <div class="detalle-vehiculo-item">
+                <img src="${rutaImagen}" alt="${v.modelo}" class="vehiculo-img-checkout">
+                <p>${v.modelo} - $${v.precio.toLocaleString()}</p>
+            </div>
+        `;
+    });
+
+    html += `
+        <h3>Total: $${total.toLocaleString()}</h3>
+        <p>Cuotas: ${cuotas} x $${precioPorCuota.toLocaleString()}</p>
+        <p>Fecha de compra: ${fechaCompra}</p>
         <p>¡Compra finalizada con éxito!</p>
     `;
+
+    resumenCompra.innerHTML = html;
+
+    toastNotificacion("Compra finalizada con éxito", "success");
+
+    // RESET carrito
+    localStorage.removeItem("carrito");
+    formCompra.querySelector("button[type='submit']").disabled = true;
+
+    // VUELTA AUTOMÁTICA AL INICIO DESPUÉS DE 5 SEGUNDOS
+    setTimeout(() => {
+        window.location.href = "../index.html";
+    }, 5000);
 }
 
-function mostrarMensajeError() {
-    resumenCompra.innerHTML = `<p>No se pudo procesar la compra. Seleccioná un vehículo.</p>`;
-}
-
+// =====================
+// EVENTO SUBMIT
+// =====================
 formCompra.addEventListener("submit", (e) => {
     e.preventDefault();
 
-    const cuotasSelect = document.getElementById("cuotas");
-    const cuotas = parseInt(cuotasSelect.value);
+    const cuotas = parseInt(document.getElementById("cuotas").value);
 
-    if (!vehiculo || !cuotas) {
-        mostrarMensajeError();
+    if (carrito.length === 0 || !cuotas) {
+        resumenCompra.innerHTML = "<p>No se pudo procesar la compra. El carrito está vacío o cuotas no válidas.</p>";
+        toastNotificacion("No se pudo procesar la compra", "error");
         return;
     }
 
-    const precioFinal = calcularPrecioFinal(vehiculo.precio, cuotas);
-
-    mostrarResumen(vehiculo, cuotas, precioFinal);
-
-    limpiarStorage();
-
-    formCompra.querySelector("button[type='submit']").disabled = true;
+    mostrarResumenFinal(carrito, cuotas);
 });

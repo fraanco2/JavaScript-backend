@@ -1,0 +1,183 @@
+/* ===================== */
+/* RESET BÁSICO Y BODY */
+/* ===================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f5f5f5;
+    color: #333;
+    line-height: 1.5;
+}
+
+a {
+    text-decoration: none;
+    color: #2196F3;
+}
+
+header, footer {
+    background-color: #2196F3;
+    color: #fff;
+    padding: 15px;
+    text-align: center;
+}
+
+main {
+    max-width: 1000px;
+    margin: 20px auto;
+    padding: 10px;
+}
+
+/* ===================== */
+/* TARJETAS VEHICULOS */
+/* ===================== */
+#container-vehiculos {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+}
+
+.card {
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    overflow: hidden;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 15px rgba(0,0,0,0.2);
+}
+
+.card img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+}
+
+.card h3 {
+    font-size: 1.2rem;
+    padding: 10px;
+}
+
+.card p {
+    padding: 0 10px 10px 10px;
+    font-weight: bold;
+    color: #444;
+}
+
+.btn-select {
+    display: block;
+    width: 90%;
+    margin: 10px auto 15px auto;
+    padding: 8px 0;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s;
+}
+
+.btn-select:hover {
+    background-color: #45a049;
+}
+
+/* ===================== */
+/* BOTON COMPRAR DINÁMICO */
+/* ===================== */
+#boton-carrito {
+    margin: 20px 0;
+    text-align: center;
+}
+
+#boton-carrito button {
+    background-color: #FF9800;
+    color: white;
+    padding: 10px 20px;
+    font-weight: bold;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#boton-carrito button:hover {
+    background-color: #e68a00;
+}
+
+/* ===================== */
+/* CHECKOUT */
+/* ===================== */
+.detalle-vehiculo-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.vehiculo-img-checkout {
+    width: 80px;
+    height: auto;
+    border-radius: 5px;
+    object-fit: cover;
+}
+
+#resumen-compra {
+    margin-top: 20px;
+    padding: 15px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+#resumen-compra h2, #resumen-compra h3 {
+    margin-bottom: 10px;
+}
+
+/* ===================== */
+/* FORMULARIO CHECKOUT */
+/* ===================== */
+form label {
+    display: block;
+    margin-top: 10px;
+    font-weight: bold;
+}
+
+form select, form button {
+    padding: 8px;
+    margin-top: 5px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+form button {
+    background-color: #4CAF50;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+form button:hover {
+    background-color: #45a049;
+}
+
+/* ===================== */
+/* RESPONSIVE */
+/* ===================== */
+@media(max-width: 600px) {
+    .card img {
+        height: 120px;
+    }
+
+    .vehiculo-img-checkout {
+        width: 60px;
+    }
+}
