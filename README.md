@@ -21,3 +21,7 @@
 - DOM Manipulation
 
 - LocalStorage
+
+- [Toastify](https://github.com/apvarun/toastify-js)
+
+- [Luxon](https://moment.github.io/luxon/#/)

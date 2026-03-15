@@ -1,25 +1,22 @@
-// =====================
 // IMPORTAR LUXON
-// =====================
+
 const { DateTime } = luxon;
 
-// =====================
+
 // ELEMENTOS DEL DOM
-// =====================
+
 const formCompra = document.getElementById("form-compra");
 const detalleVehiculo = document.getElementById("detalle-vehiculo");
 const resumenCompra = document.getElementById("resumen-compra");
 
-// =====================
 // FUNCION PARA OBTENER CARRITO
-// =====================
+
 function obtenerCarritoStorage() {
     return JSON.parse(localStorage.getItem("carrito")) || [];
 }
 
-// =====================
 // FUNCION TOASTIFY
-// =====================
+
 function toastNotificacion(text, tipo="info"){
     let color = "#2196F3"; // azul
     if(tipo === "success") color = "#4CAF50";
@@ -40,9 +37,8 @@ function toastNotificacion(text, tipo="info"){
     }).showToast();
 }
 
-// =====================
 // MOSTRAR DETALLES DEL CARRITO
-// =====================
+
 const carrito = obtenerCarritoStorage();
 
 if(carrito.length > 0) {
@@ -52,7 +48,6 @@ if(carrito.length > 0) {
     carrito.forEach(v => {
         totalBase += v.precio;
 
-        // AJUSTE DE RUTA PARA IMAGENES
         let rutaImagen = v.img.replace("./imagenes/", "../imagenes/");
 
         detalleVehiculo.innerHTML += `
@@ -69,9 +64,11 @@ if(carrito.length > 0) {
     formCompra.querySelector("button[type='submit']").disabled = true;
 }
 
-// =====================
 // FUNCION PARA CALCULO DE CUOTAS
-// =====================
+// precioBase: suma de precios de todos los vehículos en el carrito
+// cuotas: número de cuotas seleccionado por el usuario
+// Devuelve un objeto con total a pagar y precio por cuota
+
 function calcularPrecioFinal(precioBase, cuotas) {
     const intereses = { 3: 0.10, 6: 0.20, 12: 0.30 };
     const tasa = intereses[cuotas] || 0;
@@ -82,9 +79,10 @@ function calcularPrecioFinal(precioBase, cuotas) {
     return { total, precioPorCuota };
 }
 
-// =====================
 // FUNCION PARA MOSTRAR RESUMEN FINAL
-// =====================
+// Muestra los vehículos seleccionados, total, cuotas y fecha de compra
+// También limpia el carrito y muestra notificación
+
 function mostrarResumenFinal(carrito, cuotas) {
     let totalBase = carrito.reduce((acc, v) => acc + v.precio, 0);
     const { total, precioPorCuota } = calcularPrecioFinal(totalBase, cuotas);
@@ -124,9 +122,8 @@ function mostrarResumenFinal(carrito, cuotas) {
     }, 5000);
 }
 
-// =====================
 // EVENTO SUBMIT
-// =====================
+
 formCompra.addEventListener("submit", (e) => {
     e.preventDefault();
 

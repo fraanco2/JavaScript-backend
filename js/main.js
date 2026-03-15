@@ -1,6 +1,4 @@
-// =====================
 // CLASE VEHICULO
-// =====================
 class Vehiculo {
     constructor(id, modelo, precio, img) {
         this.id = id;
@@ -10,29 +8,23 @@ class Vehiculo {
     }
 }
 
-// =====================
 // ELEMENTOS DEL DOM
-// =====================
+
 const container = document.getElementById("container-vehiculos");
 const mensaje = document.getElementById("mensaje");
 
-// NUEVO: contenedor para botón dinámico de carrito
+// Contenedor para botón dinámico de carrito
 const botonCarrito = document.getElementById("boton-carrito");
 
-// =====================
 // VARIABLES
-// =====================
 let vehiculos = [];
 
-// =====================
 // FETCH ASINCRÓNICO
-// =====================
 async function cargarVehiculos() {
     try {
         const response = await fetch("./data/vehiculos.json");
         const data = await response.json();
         
-        // NUEVO: convertir a objetos de la clase Vehiculo
         vehiculos = data.map(v => new Vehiculo(v.id, v.modelo, v.precio, v.img));
         renderVehiculos();
         actualizarBotonCarrito(); // mostrar botón si hay items en carrito
@@ -42,9 +34,7 @@ async function cargarVehiculos() {
     }
 }
 
-// =====================
 // RENDER DE TARJETAS
-// =====================
 function renderVehiculos() {
     container.innerHTML = "";
 
@@ -52,7 +42,6 @@ function renderVehiculos() {
         const card = document.createElement("div");
         card.classList.add("card");
 
-        // NUEVO: render más profesional con estructura y precios formateados
         card.innerHTML = `
             <div class="card-header">
                 <h3>${vehiculo.modelo}</h3>
@@ -70,10 +59,8 @@ function renderVehiculos() {
     });
 }
 
-// =====================
 // FUNCION PARA TOASTIFY
-// =====================
-// NUEVO: centraliza notificaciones con tipo y estilo
+// Centraliza notificaciones con tipo y estilo
 function toastNotificacion(text, tipo="info"){
     let color = "#2196F3"; // azul
     if(tipo === "success") color = "#4CAF50";
@@ -94,9 +81,7 @@ function toastNotificacion(text, tipo="info"){
     }).showToast();
 }
 
-// =====================
 // EVENTO DELEGADO
-// =====================
 container.addEventListener("click", (e) => {
     if (e.target.matches("button[data-id]")) {
         const idVehiculo = parseInt(e.target.dataset.id);
@@ -104,20 +89,17 @@ container.addEventListener("click", (e) => {
 
         if (!vehiculoElegido) return;
 
-        // NUEVO: carrito acumulativo
         let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
         carrito.push(vehiculoElegido);
         localStorage.setItem("carrito", JSON.stringify(carrito));
 
         toastNotificacion(`Agregaste ${vehiculoElegido.modelo} al carrito`, "success");
 
-        actualizarBotonCarrito(); // NUEVO: actualiza el botón dinámico
+        actualizarBotonCarrito(); 
     }
 });
 
-// =====================
 // BOTON DINÁMICO DE CARRITO
-// =====================
 function actualizarBotonCarrito() {
     const carrito = JSON.parse(localStorage.getItem("carrito")) || [];
 
@@ -129,13 +111,15 @@ function actualizarBotonCarrito() {
         document.getElementById("btn-comprar").addEventListener("click", () => {
             window.location.href = "./html/checkout.html";
         });
+
+        mensaje.textContent = ""; 
     } else {
         botonCarrito.innerHTML = "";
+        mensaje.textContent = "Tu carrito está vacío";
+        mensaje.style.color = "#f44336";
+        mensaje.style.fontWeight = "bold";
     }
 }
 
-// =====================
-// INICIALIZACIÓN
-// =====================
 cargarVehiculos();
-actualizarBotonCarrito(); // asegura que al cargar la página se vea el botón si hay items
+actualizarBotonCarrito();

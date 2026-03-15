@@ -1,6 +1,4 @@
-/* ===================== */
-/* RESET BÁSICO Y BODY */
-/* ===================== */
+/* RESET */
 * {
     margin: 0;
     padding: 0;
@@ -32,9 +30,8 @@ main {
     padding: 10px;
 }
 
-/* ===================== */
 /* TARJETAS VEHICULOS */
-/* ===================== */
+
 #container-vehiculos {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -89,9 +86,8 @@ main {
     background-color: #45a049;
 }
 
-/* ===================== */
 /* BOTON COMPRAR DINÁMICO */
-/* ===================== */
+
 #boton-carrito {
     margin: 20px 0;
     text-align: center;
@@ -112,9 +108,9 @@ main {
     background-color: #e68a00;
 }
 
-/* ===================== */
+
 /* CHECKOUT */
-/* ===================== */
+
 .detalle-vehiculo-item {
     display: flex;
     align-items: center;
@@ -141,9 +137,9 @@ main {
     margin-bottom: 10px;
 }
 
-/* ===================== */
+
 /* FORMULARIO CHECKOUT */
-/* ===================== */
+
 form label {
     display: block;
     margin-top: 10px;
@@ -169,9 +165,8 @@ form button:hover {
     background-color: #45a049;
 }
 
-/* ===================== */
 /* RESPONSIVE */
-/* ===================== */
+
 @media(max-width: 600px) {
     .card img {
         height: 120px;
