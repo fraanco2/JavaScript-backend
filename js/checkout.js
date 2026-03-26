@@ -20,7 +20,7 @@ function toastNotificacion(text, tipo="info"){
     }).showToast();
 }
 
-// ================= RENDER DEL CARRITO
+// RENDER DEL CARRITO
 function renderCarrito(){
     detalleVehiculo.innerHTML="";
     let totalBase=0;
@@ -61,7 +61,7 @@ detalleVehiculo.addEventListener("click",e=>{
     }
 });
 
-// ================= CALCULO CUOTAS
+// CALCULO CUOTAS
 function calcularTotalConCuotas(totalBase, cuotas){
     const intereses = {3:0.10,6:0.20,12:0.30};
     const tasa = intereses[cuotas] || 0;
@@ -70,7 +70,7 @@ function calcularTotalConCuotas(totalBase, cuotas){
     return {total, precioPorCuota};
 }
 
-// ================= SUBMIT FORM
+//  SUBMIT FORM
 formCompra.addEventListener("submit",e=>{
     e.preventDefault();
     if(carrito.length===0) return;
