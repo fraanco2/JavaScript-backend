@@ -1,4 +1,6 @@
-/* RESET */
+/* ======================= */
+/* RESET GENERAL           */
+/* ======================= */
 * {
     margin: 0;
     padding: 0;
@@ -30,8 +32,9 @@ main {
     padding: 10px;
 }
 
-/* TARJETAS VEHICULOS */
-
+/* ======================= */
+/* TARJETAS VEHÍCULOS      */
+/* ======================= */
 #container-vehiculos {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -86,16 +89,16 @@ main {
     background-color: #45a049;
 }
 
-/* BOTON COMPRAR DINÁMICO */
-
+/* ======================= */
+/* BOTÓN CARRITO DINÁMICO  */
+/* ======================= */
 #boton-carrito {
     margin: 20px 0;
     text-align: center;
 }
 
 #boton-carrito button {
-    background-color: #FF9800;
-    color: white;
+    margin: 5px;
     padding: 10px 20px;
     font-weight: bold;
     border: none;
@@ -104,18 +107,55 @@ main {
     transition: background-color 0.3s;
 }
 
-#boton-carrito button:hover {
+#btn-comprar {
+    background-color: #FF9800;
+    color: white;
+}
+
+#btn-comprar:hover {
     background-color: #e68a00;
 }
 
+#btn-vaciar {
+    background-color: #f44336;
+    color: white;
+}
 
-/* CHECKOUT */
+#btn-vaciar:hover {
+    background-color: #d32f2f;
+}
 
+#volver-inicio {
+    display: block;
+    margin: 20px auto;
+    padding: 12px 25px;
+    background-color: #2196F3;
+    color: #fff;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+#volver-inicio:hover {
+    background-color: #1976d2;
+    transform: scale(1.05);
+}
+
+/* ======================= */
+/* CHECKOUT Y CONFIRMACION  */
+/* ======================= */
 .detalle-vehiculo-item {
     display: flex;
     align-items: center;
+    justify-content: space-between;
     gap: 10px;
     margin-bottom: 10px;
+    padding: 10px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
 .vehiculo-img-checkout {
@@ -125,7 +165,25 @@ main {
     object-fit: cover;
 }
 
-#resumen-compra {
+.vehiculo-info {
+    flex-grow: 1;
+}
+
+.eliminar-btn {
+    background-color: #f44336;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.eliminar-btn:hover {
+    background-color: #d32f2f;
+}
+
+#resumen-compra, .resumen-confirmacion {
     margin-top: 20px;
     padding: 15px;
     background-color: #fff;
@@ -133,13 +191,14 @@ main {
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
 
-#resumen-compra h2, #resumen-compra h3 {
+#resumen-compra h2, #resumen-compra h3,
+.resumen-confirmacion h2, .resumen-confirmacion h3 {
     margin-bottom: 10px;
 }
 
-
-/* FORMULARIO CHECKOUT */
-
+/* ======================= */
+/* FORMULARIO CHECKOUT     */
+/* ======================= */
 form label {
     display: block;
     margin-top: 10px;
@@ -165,14 +224,24 @@ form button:hover {
     background-color: #45a049;
 }
 
-/* RESPONSIVE */
-
-@media(max-width: 600px) {
+/* ======================= */
+/* RESPONSIVE              */
+/* ======================= */
+@media(max-width:600px){
     .card img {
         height: 120px;
     }
-
     .vehiculo-img-checkout {
         width: 60px;
+    }
+    .detalle-vehiculo-item {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .vehiculo-info {
+        width: 100%;
+    }
+    .eliminar-btn {
+        align-self: flex-end;
     }
 }
